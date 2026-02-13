@@ -130,20 +130,15 @@ export const CertificatesPage = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <a
-                          href={certificateService.download(cert.id)}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-slate-700 text-white hover:bg-slate-800"
+                          onClick={() => handleDownload(cert.id, cert.unique_code)}
                           data-testid={`download-certificate-${cert.id}`}
                         >
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-slate-700 text-white hover:bg-slate-800"
-                          >
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </a>
+                          <Download className="w-4 h-4" />
+                        </Button>
                         <a
                           href={`/verify/${cert.unique_code}`}
                           target="_blank"
