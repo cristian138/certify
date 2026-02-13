@@ -104,6 +104,7 @@ class CertificateCreate(BaseModel):
     certifier_name: str
     representative_name: str
     representative_name_2: Optional[str] = None
+    representative_name_3: Optional[str] = None
     event_name: Optional[str] = None
     course_name: Optional[str] = None
 
