@@ -20,10 +20,14 @@ class CertifyProAPITester:
     def run_test(self, name, method, endpoint, expected_status, data=None, files=None, params=None):
         """Run a single API test"""
         url = f"{self.base_url}/api/{endpoint}"
-        headers = {'Content-Type': 'application/json'} if not files else {}
+        headers = {}
         
         if self.token:
             headers['Authorization'] = f'Bearer {self.token}'
+
+        # Only add Content-Type for JSON requests (not for file uploads)
+        if not files and data:
+            headers['Content-Type'] = 'application/json'
 
         self.tests_run += 1
         print(f"\n🔍 Testing {name}...")
@@ -34,7 +38,7 @@ class CertifyProAPITester:
                 response = requests.get(url, headers=headers, params=params)
             elif method == 'POST':
                 if files:
-                    headers.pop('Content-Type', None)  # Let requests handle multipart
+                    # For file uploads, don't set Content-Type, let requests handle it
                     response = requests.post(url, headers=headers, files=files, data=data)
                 else:
                     response = requests.post(url, json=data, headers=headers)
