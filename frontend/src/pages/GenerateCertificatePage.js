@@ -109,6 +109,10 @@ export const GenerateCertificatePage = () => {
     try {
       const certificates = await certificateService.createBatch(
         batchForm.template_id,
+        batchForm.certifier_name,
+        batchForm.representative_name,
+        batchForm.representative_name_2,
+        batchForm.representative_name_3,
         batchForm.event_name,
         batchForm.course_name,
         batchForm.file
