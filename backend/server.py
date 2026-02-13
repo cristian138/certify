@@ -453,19 +453,27 @@ async def create_certificates_batch(
         
         certificates = []
         
-        # Expected columns: participant_name, document_id, certifier_name, representative_name, representative_name_2 (optional), representative_name_3 (optional)
+        # Expected columns: participant_name, document_id
+        # Optional columns from Excel: certifier_name, representative_name, representative_name_2, representative_name_3
+        # If not in Excel, use values from form
         for row in sheet.iter_rows(min_row=2, values_only=True):
             if not row[0]:  # Skip empty rows
                 continue
+            
+            # Use Excel value if present, otherwise use form value
+            certifier = str(row[2]) if len(row) > 2 and row[2] else batch_data.certifier_name
+            rep1 = str(row[3]) if len(row) > 3 and row[3] else batch_data.representative_name
+            rep2 = str(row[4]) if len(row) > 4 and row[4] else batch_data.representative_name_2
+            rep3 = str(row[5]) if len(row) > 5 and row[5] else batch_data.representative_name_3
             
             certificate = Certificate(
                 template_id=batch_data.template_id,
                 participant_name=str(row[0]),
                 document_id=str(row[1]),
-                certifier_name=str(row[2]),
-                representative_name=str(row[3]),
-                representative_name_2=str(row[4]) if len(row) > 4 and row[4] else None,
-                representative_name_3=str(row[5]) if len(row) > 5 and row[5] else None,
+                certifier_name=certifier or "",
+                representative_name=rep1 or "",
+                representative_name_2=rep2 if rep2 else None,
+                representative_name_3=rep3 if rep3 else None,
                 event_name=batch_data.event_name,
                 course_name=batch_data.course_name,
                 created_by=current_user.id
