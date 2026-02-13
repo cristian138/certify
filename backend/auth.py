@@ -43,7 +43,7 @@ def decode_token(token: str) -> dict:
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db: AsyncIOMotorDatabase = None) -> UserResponse:
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db: AsyncIOMotorDatabase = Depends()) -> UserResponse:
     token = credentials.credentials
     payload = decode_token(token)
     user_id: str = payload.get("sub")
