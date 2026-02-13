@@ -126,10 +126,10 @@ async def get_me(current_user: UserResponse = Depends(get_current_user), databas
 
 @api_router.post("/templates", response_model=Template)
 async def create_template(
-    name: str,
-    description: str = None,
-    width: float = 1000,
-    height: float = 707,
+    name: str = Form(...),
+    description: str = Form(None),
+    width: float = Form(1000),
+    height: float = Form(707),
     file: UploadFile = File(...),
     current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
