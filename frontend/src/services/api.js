@@ -108,6 +108,13 @@ export const certificateService = {
 
   download: (id) => `${API}/certificates/${id}/download`,
   
+  downloadBatchPdf: async (certificateIds) => {
+    const response = await api.post('/certificates/batch-pdf', certificateIds, {
+      responseType: 'blob',
+    });
+    return response.data;
+  },
+  
   verify: async (code) => {
     const response = await axios.get(`${API}/verify/${code}`);
     return response.data;
