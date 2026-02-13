@@ -315,6 +315,58 @@ export const GenerateCertificatePage = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
+                  <Label htmlFor="batch_certifier_name" className="text-slate-300">Certificador *</Label>
+                  <Input
+                    id="batch_certifier_name"
+                    name="certifier_name"
+                    value={batchForm.certifier_name}
+                    onChange={handleBatchChange}
+                    className="mt-2 bg-slate-800 border-slate-700 text-white"
+                    placeholder="Nombre del certificador"
+                    data-testid="batch-certifier-input"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="batch_representative_name" className="text-slate-300">Representante 1 *</Label>
+                  <Input
+                    id="batch_representative_name"
+                    name="representative_name"
+                    value={batchForm.representative_name}
+                    onChange={handleBatchChange}
+                    className="mt-2 bg-slate-800 border-slate-700 text-white"
+                    placeholder="Nombre del representante 1"
+                    data-testid="batch-representative-1-input"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="batch_representative_name_2" className="text-slate-300">Representante 2</Label>
+                  <Input
+                    id="batch_representative_name_2"
+                    name="representative_name_2"
+                    value={batchForm.representative_name_2}
+                    onChange={handleBatchChange}
+                    className="mt-2 bg-slate-800 border-slate-700 text-white"
+                    placeholder="Nombre del representante 2 (opcional)"
+                    data-testid="batch-representative-2-input"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="batch_representative_name_3" className="text-slate-300">Representante 3</Label>
+                  <Input
+                    id="batch_representative_name_3"
+                    name="representative_name_3"
+                    value={batchForm.representative_name_3}
+                    onChange={handleBatchChange}
+                    className="mt-2 bg-slate-800 border-slate-700 text-white"
+                    placeholder="Nombre del representante 3 (opcional)"
+                    data-testid="batch-representative-3-input"
+                  />
+                </div>
+
+                <div>
                   <Label htmlFor="batch_event_name" className="text-slate-300">Evento</Label>
                   <Input
                     id="batch_event_name"
@@ -369,7 +421,7 @@ export const GenerateCertificatePage = () => {
                   )}
                 </div>
                 <p className="text-sm text-slate-400 mt-2">
-                  El archivo debe contener columnas: participant_name, document_id, certifier_name, representative_name, representative_name_2 (opcional), representative_name_3 (opcional)
+                  El archivo debe contener columnas: participant_name, document_id (los firmantes se tomarán del formulario)
                 </p>
               </div>
 
