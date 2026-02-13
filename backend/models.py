@@ -110,6 +110,10 @@ class CertificateCreate(BaseModel):
 
 class CertificateBatchCreate(BaseModel):
     template_id: str
+    certifier_name: Optional[str] = None
+    representative_name: Optional[str] = None
+    representative_name_2: Optional[str] = None
+    representative_name_3: Optional[str] = None
     event_name: Optional[str] = None
     course_name: Optional[str] = None
 
