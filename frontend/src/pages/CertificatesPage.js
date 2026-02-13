@@ -4,6 +4,9 @@ import { certificateService } from '../services/api';
 import { Award, Plus, Download, ExternalLink } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const CertificatesPage = () => {
   const [certificates, setCertificates] = useState([]);
@@ -21,6 +24,36 @@ export const CertificatesPage = () => {
       toast.error('Error al cargar certificados');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownload = async (certId, uniqueCode) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `${BACKEND_URL}/api/certificates/${certId}/download`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: 'blob',
+        }
+      );
+
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `certificate_${uniqueCode}.png`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast.success('Certificado descargado');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Error al descargar certificado');
     }
   };
 
