@@ -88,7 +88,7 @@ class Certificate(BaseModel):
     issue_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     event_name: Optional[str] = None
     course_name: Optional[str] = None
-    hash_code: str  # SHA256 hash for integrity
+    hash_code: Optional[str] = None  # SHA256 hash for integrity
     pdf_url: Optional[str] = None
     qr_code_url: Optional[str] = None
     is_valid: bool = True
