@@ -115,12 +115,25 @@ export const CertificatesPage = () => {
           <h1 className="text-4xl font-bold font-outfit text-white mb-2">Certificados</h1>
           <p className="text-slate-400">Gestiona los certificados generados</p>
         </div>
-        <Link to="/certificates/generate">
-          <Button className="bg-accent hover:bg-accent-hover" data-testid="generate-certificate-btn">
-            <Plus className="w-5 h-5 mr-2" />
-            Generar Certificado
-          </Button>
-        </Link>
+        <div className="flex items-center gap-3">
+          {selectedCerts.length > 0 && (
+            <Button 
+              onClick={handleDownloadBatchPdf}
+              disabled={downloadingPdf}
+              className="bg-green-600 hover:bg-green-700"
+              data-testid="download-batch-pdf-btn"
+            >
+              <FileDown className="w-5 h-5 mr-2" />
+              {downloadingPdf ? 'Descargando...' : `Descargar ${selectedCerts.length} como PDF`}
+            </Button>
+          )}
+          <Link to="/certificates/generate">
+            <Button className="bg-accent hover:bg-accent-hover" data-testid="generate-certificate-btn">
+              <Plus className="w-5 h-5 mr-2" />
+              Generar Certificado
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {certificates.length === 0 ? (
@@ -141,6 +154,19 @@ export const CertificatesPage = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-800">
+                  <th className="px-4 py-4 text-left">
+                    <button 
+                      onClick={toggleSelectAll}
+                      className="text-slate-300 hover:text-white transition-colors"
+                      data-testid="select-all-checkbox"
+                    >
+                      {selectedCerts.length === certificates.length ? (
+                        <CheckSquare className="w-5 h-5 text-accent" />
+                      ) : (
+                        <Square className="w-5 h-5" />
+                      )}
+                    </button>
+                  </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Código</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Participante</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">Documento</th>
@@ -153,9 +179,24 @@ export const CertificatesPage = () => {
                 {certificates.map((cert) => (
                   <tr
                     key={cert.id}
-                    className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors"
+                    className={`border-b border-slate-800 hover:bg-slate-800/50 transition-colors ${
+                      selectedCerts.includes(cert.id) ? 'bg-slate-800/30' : ''
+                    }`}
                     data-testid={`certificate-row-${cert.id}`}
                   >
+                    <td className="px-4 py-4">
+                      <button 
+                        onClick={() => toggleSelectCert(cert.id)}
+                        className="text-slate-300 hover:text-white transition-colors"
+                        data-testid={`select-cert-${cert.id}`}
+                      >
+                        {selectedCerts.includes(cert.id) ? (
+                          <CheckSquare className="w-5 h-5 text-accent" />
+                        ) : (
+                          <Square className="w-5 h-5" />
+                        )}
+                      </button>
+                    </td>
                     <td className="px-6 py-4">
                       <span className="font-mono text-accent font-semibold">{cert.unique_code}</span>
                     </td>
