@@ -28,7 +28,7 @@ from auth import (
     get_password_hash, verify_password, create_access_token,
     get_current_user, require_role
 )
-from utils import generate_certificate_hash, generate_qr_code, get_font, hex_to_rgb
+from utils import generate_certificate_hash, generate_qr_code, get_font, hex_to_rgb, create_pdf_from_images
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
