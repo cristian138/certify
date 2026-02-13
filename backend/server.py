@@ -453,7 +453,7 @@ async def create_certificates_batch(
         
         certificates = []
         
-        # Expected columns: participant_name, document_id, certifier_name, representative_name, representative_name_2 (optional)
+        # Expected columns: participant_name, document_id, certifier_name, representative_name, representative_name_2 (optional), representative_name_3 (optional)
         for row in sheet.iter_rows(min_row=2, values_only=True):
             if not row[0]:  # Skip empty rows
                 continue
@@ -465,6 +465,7 @@ async def create_certificates_batch(
                 certifier_name=str(row[2]),
                 representative_name=str(row[3]),
                 representative_name_2=str(row[4]) if len(row) > 4 and row[4] else None,
+                representative_name_3=str(row[5]) if len(row) > 5 and row[5] else None,
                 event_name=batch_data.event_name,
                 course_name=batch_data.course_name,
                 created_by=current_user.id
