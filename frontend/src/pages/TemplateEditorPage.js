@@ -7,7 +7,6 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
-import Draggable from 'react-draggable';
 
 const fieldTypes = [
   { value: 'participant_name', label: 'Nombre Participante', icon: Type },
@@ -20,6 +19,73 @@ const fieldTypes = [
   { value: 'qr_code', label: 'Código QR', icon: QrCode },
 ];
 
+const DraggableField = ({ field, onDrag, onClick, isSelected, scale }) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const fieldRef = useRef(null);
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setDragStart({
+      x: e.clientX - field.x * scale,
+      y: e.clientY - field.y * scale,
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    
+    const newX = (e.clientX - dragStart.x) / scale;
+    const newY = (e.clientY - dragStart.y) / scale;
+    
+    onDrag(field.id, { x: Math.max(0, newX), y: Math.max(0, newY) });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, dragStart]);
+
+  const fieldType = fieldTypes.find(t => t.value === field.field_type);
+
+  return (
+    <div
+      ref={fieldRef}
+      className={`absolute cursor-move ${
+        isSelected ? 'ring-2 ring-accent' : 'ring-1 ring-slate-400'
+      }`}
+      style={{
+        left: field.x * scale,
+        top: field.y * scale,
+        width: field.width * scale,
+        height: field.height * scale,
+        backgroundColor: field.field_type === 'qr_code' ? '#f0f0f0' : 'rgba(37, 99, 235, 0.2)',
+      }}
+      onMouseDown={handleMouseDown}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick(field.id);
+      }}
+      data-testid={`canvas-field-${field.id}`}
+    >
+      <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-slate-700 pointer-events-none">
+        {fieldType?.label}
+      </div>
+    </div>
+  );
+};
+
 export const TemplateEditorPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,7 +96,7 @@ export const TemplateEditorPage = () => {
   const [selectedField, setSelectedField] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0, scale: 1 });
 
   useEffect(() => {
     loadTemplate();
@@ -96,12 +162,8 @@ export const TemplateEditorPage = () => {
     toast.success('Campo eliminado');
   };
 
-  const handleDrag = (fieldId, e, data) => {
-    const scale = canvasSize.scale || 1;
-    updateField(fieldId, {
-      x: data.x / scale,
-      y: data.y / scale,
-    });
+  const handleFieldDrag = (fieldId, position) => {
+    updateField(fieldId, position);
   };
 
   const saveTemplate = async () => {
@@ -223,34 +285,18 @@ export const TemplateEditorPage = () => {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
             }}
+            onClick={() => setSelectedField(null)}
             data-testid="template-canvas"
           >
             {fields.map((field) => (
-              <Draggable
+              <DraggableField
                 key={field.id}
-                position={{ x: field.x * (canvasSize.scale || 1), y: field.y * (canvasSize.scale || 1) }}
-                onStop={(e, data) => handleDrag(field.id, e, data)}
-                bounds="parent"
-              >
-                <div
-                  className={`absolute cursor-move ${
-                    selectedField === field.id
-                      ? 'ring-2 ring-accent'
-                      : 'ring-1 ring-slate-400'
-                  }`}
-                  style={{
-                    width: field.width * (canvasSize.scale || 1),
-                    height: field.height * (canvasSize.scale || 1),
-                    backgroundColor: field.field_type === 'qr_code' ? '#f0f0f0' : 'rgba(37, 99, 235, 0.2)',
-                  }}
-                  onClick={() => setSelectedField(field.id)}
-                  data-testid={`canvas-field-${field.id}`}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center text-xs font-medium text-slate-700 pointer-events-none">
-                    {fieldTypes.find(t => t.value === field.field_type)?.label}
-                  </div>
-                </div>
-              </Draggable>
+                field={field}
+                onDrag={handleFieldDrag}
+                onClick={setSelectedField}
+                isSelected={selectedField === field.id}
+                scale={canvasSize.scale}
+              />
             ))}
           </div>
         </div>
