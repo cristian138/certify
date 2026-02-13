@@ -221,7 +221,8 @@ export const TemplateEditorPage = () => {
   const signerFields = fields.filter(f => 
     f.field_type === 'certifier_name' || 
     f.field_type === 'representative_name' || 
-    f.field_type === 'representative_name_2'
+    f.field_type === 'representative_name_2' ||
+    f.field_type === 'representative_name_3'
   );
 
   return (
