@@ -393,6 +393,7 @@ async def create_certificate(
         certifier_name=cert_data.certifier_name,
         representative_name=cert_data.representative_name,
         representative_name_2=cert_data.representative_name_2,
+        representative_name_3=cert_data.representative_name_3,
         event_name=cert_data.event_name,
         course_name=cert_data.course_name,
         created_by=current_user.id
