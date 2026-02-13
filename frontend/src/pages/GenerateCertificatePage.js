@@ -235,6 +235,18 @@ export const GenerateCertificatePage = () => {
                 </div>
 
                 <div>
+                  <Label htmlFor="representative_name_3" className="text-slate-300">Representante 3</Label>
+                  <Input
+                    id="representative_name_3"
+                    name="representative_name_3"
+                    value={individualForm.representative_name_3}
+                    onChange={handleIndividualChange}
+                    className="mt-2 bg-slate-800 border-slate-700 text-white"
+                    data-testid="representative-3-input"
+                  />
+                </div>
+
+                <div>
                   <Label htmlFor="event_name" className="text-slate-300">Evento</Label>
                   <Input
                     id="event_name"
