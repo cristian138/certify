@@ -1,0 +1,149 @@
+{
+  "identity": {
+    "name": "E1",
+    "persona": "The Anti-AI Designer",
+    "principles": [
+      "Fusion over Imitation: Mix disparate disciplines.",
+      "Emotion First: Design for feeling, not just function.",
+      "Content is King: Direct the user's eye like a film director.",
+      "Zoom In: Bold details create intimacy.",
+      "Negative Space: Let the design breathe."
+    ],
+    "anti_patterns": [
+      "Purple/Teal generic gradients",
+      "Inter font everywhere (use it only for body)",
+      "Boring centered layouts",
+      "Low contrast gray-on-gray"
+    ]
+  },
+  "project": {
+    "name": "CertifyPro - Secure Document Platform",
+    "type": "SaaS Dashboard & Verification Portal",
+    "emotional_tone": "Authoritative, Secure, Precision, Professional",
+    "theme_strategy": "The Trust Vault - Deep Navy & Steel",
+    "target_audience": "Academies, Institutions, Certification Bodies"
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Outfit, sans-serif",
+      "body": "Public Sans, sans-serif",
+      "certificate_serif": "Playfair Display, serif",
+      "code": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-4xl md:text-5xl font-bold tracking-tight",
+      "h2": "text-3xl md:text-4xl font-semibold tracking-tight",
+      "h3": "text-2xl font-semibold",
+      "body_lg": "text-lg leading-relaxed",
+      "body_base": "text-base leading-relaxed text-slate-600 dark:text-slate-300",
+      "caption": "text-sm text-slate-500 uppercase tracking-widest"
+    },
+    "installation": "Import fonts via Google Fonts in index.css: @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@300;400;500;600&display=swap');"
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "DEFAULT": "#0f172a",
+        "foreground": "#f8fafc",
+        "50": "#f8fafc",
+        "100": "#f1f5f9",
+        "200": "#e2e8f0",
+        "300": "#cbd5e1",
+        "400": "#94a3b8",
+        "500": "#64748b",
+        "600": "#475569",
+        "700": "#334155",
+        "800": "#1e293b",
+        "900": "#0f172a",
+        "950": "#020617"
+      },
+      "accent": {
+        "DEFAULT": "#2563eb",
+        "foreground": "#ffffff",
+        "hover": "#1d4ed8"
+      },
+      "success": {
+        "DEFAULT": "#10b981",
+        "bg": "#ecfdf5",
+        "text": "#065f46"
+      },
+      "error": {
+        "DEFAULT": "#f43f5e",
+        "bg": "#fff1f2",
+        "text": "#9f1239"
+      },
+      "warning": {
+        "DEFAULT": "#f59e0b",
+        "bg": "#fffbeb",
+        "text": "#92400e"
+      }
+    },
+    "theme_mode": "dark_preferred_for_dashboard_light_for_verification"
+  },
+  "layout_strategy": {
+    "dashboard": {
+      "structure": "Sidebar Left (Fixed) + Top Bar + Scrollable Content Area",
+      "grid": "Bento Grid System (grid-cols-12)",
+      "spacing": "Relaxed (p-6 to p-8 for containers)",
+      "card_style": "Flat with 1px border-slate-200 dark:border-slate-800, no shadow by default, shadow-lg on hover"
+    },
+    "verification_page": {
+      "structure": "Centered Floating Card on Animated Background",
+      "visuals": "High-trust seal animations, clean typography, distraction-free"
+    },
+    "editor_canvas": {
+      "structure": "Three-column: Tool Panel (Left) - Canvas (Center) - Properties (Right)",
+      "background": "Dot pattern or Grid pattern background for precision feel"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm h-10 px-4 py-2 rounded-md font-medium transition-transform active:scale-95",
+      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 rounded-md transition-colors",
+      "ghost": "hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 rounded-md transition-colors",
+      "destructive": "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm h-10 px-4 py-2 rounded-md"
+    },
+    "cards": {
+      "dashboard": "bg-card text-card-foreground rounded-xl border shadow-sm transition-all hover:border-primary/20",
+      "certificate_preview": "aspect-[1.414] shadow-2xl rounded-sm bg-white overflow-hidden relative border-8 border-white"
+    },
+    "inputs": {
+      "default": "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-white/5 border border-white/10 (Use for overlays)",
+    "gradients": "Subtle, deep gradients only (e.g., bg-gradient-to-br from-slate-900 to-slate-800)",
+    "shadows": "shadow-sm for UI elements, shadow-2xl for the certificate preview card",
+    "animations": {
+      "page_transition": "initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}",
+      "hover_lift": "hover:-translate-y-1 transition-transform duration-200"
+    }
+  },
+  "images_and_assets": {
+    "defaults": {
+      "certificate_bg_1": "https://images.unsplash.com/photo-1605106702734-205df224ecce?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "certificate_bg_2": "https://images.unsplash.com/photo-1769120061095-1ce551c67514?crop=entropy&cs=srgb&fm=jpg&q=85"
+    },
+    "icons": "Lucide React (default), use Phosphor Icons for a more technical look if needed."
+  },
+  "instructions_to_main_agent": [
+    "PHASE 0: Theme Setup. Force 'dark' class on the HTML element for the dashboard routes, but allow 'light' for the public verification page.",
+    "PHASE 1: Project Setup. Ensure 'react-router-dom' is configured with a layout wrapper that handles the Sidebar/Topbar structure.",
+    "PHASE 2: Components. Customize Shadcn UI components in /components/ui to match the 'Navy & Steel' theme. Override default radius to '0.5rem'.",
+    "PHASE 3: Editor Logic. The 'Certificate Editor' is the core feature. It needs a canvas area where items can be dragged. Use 'react-draggable' or similar logic (or simple absolute positioning with mouse event handlers) for the MVP.",
+    "PHASE 4: Verification. The verification page must look OFFICIAL. Use a large checkmark icon (animated) and clear status indicators.",
+    "CRITICAL: Do not use 'Inter' for Headings. Use 'Outfit'.",
+    "CRITICAL: All interactive elements must have data-testid attributes."
+  ],
+  "accessibility_rules": [
+    "Ensure contrast ratio of at least 4.5:1 for normal text.",
+    "Use semantic HTML (main, nav, aside, section).",
+    "Focus states must be clearly visible (ring-2 ring-offset-2 ring-primary).",
+    "Forms must have labels."
+  ],
+  "testing_requirements": {
+    "attributes": "data-testid",
+    "convention": "kebab-case (e.g., login-submit-btn, certificate-canvas-item)"
+  }
+}
