@@ -85,6 +85,7 @@ class Certificate(BaseModel):
     certifier_name: str
     representative_name: str
     representative_name_2: Optional[str] = None
+    representative_name_3: Optional[str] = None
     issue_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     event_name: Optional[str] = None
     course_name: Optional[str] = None
