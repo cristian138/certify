@@ -283,7 +283,8 @@ async def get_template_image(template_id: str, database: AsyncIOMotorDatabase = 
 # ==================== CERTIFICATE GENERATION ====================
 
 async def generate_certificate_image(template: dict, certificate_data: dict, database: AsyncIOMotorDatabase):
-    \"\"\"Generate certificate image with all fields\"\"\"\n    # Load template image
+    """Generate certificate image with all fields"""
+    # Load template image
     template_img = Image.open(template['file_url']).convert('RGB')
     draw = ImageDraw.Draw(template_img)
     
