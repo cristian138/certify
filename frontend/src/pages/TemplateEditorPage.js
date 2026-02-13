@@ -34,6 +34,10 @@ const availableFonts = [
   { value: 'Comic Sans MS', label: 'Comic Sans MS' },
   { value: 'Trebuchet MS', label: 'Trebuchet MS' },
   { value: 'Impact', label: 'Impact' },
+  { value: 'Dancing Script', label: 'Dancing Script (Cursiva)' },
+  { value: 'Great Vibes', label: 'Great Vibes (Elegante)' },
+  { value: 'Parisienne', label: 'Parisienne (Clásica)' },
+  { value: 'Allura', label: 'Allura (Script)' },
 ];
 
 const DraggableField = ({ field, onDrag, onClick, isSelected, scale }) => {
