@@ -289,7 +289,7 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
     draw = ImageDraw.Draw(template_img)
     
     # Generate QR code
-    verification_url = f\"https://certgen-8.preview.emergentagent.com/verify/{certificate_data['unique_code']}\"
+    verification_url = f"https://certgen-8.preview.emergentagent.com/verify/{certificate_data['unique_code']}"
     qr_data = generate_qr_code(verification_url, size=200)
     
     # Draw fields
@@ -300,22 +300,22 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
         font_color = field.get('font_color', '#000000')
         
         # Get field value
-        value = \"\"
-        if field_type == \"participant_name\":
+        value = ""
+        if field_type == "participant_name":
             value = certificate_data['participant_name']
-        elif field_type == \"document_id\":
+        elif field_type == "document_id":
             value = certificate_data['document_id']
-        elif field_type == \"certifier_name\":
+        elif field_type == "certifier_name":
             value = certificate_data['certifier_name']
-        elif field_type == \"representative_name\":
+        elif field_type == "representative_name":
             value = certificate_data['representative_name']
-        elif field_type == \"representative_name_2\" and certificate_data.get('representative_name_2'):
+        elif field_type == "representative_name_2" and certificate_data.get('representative_name_2'):
             value = certificate_data['representative_name_2']
-        elif field_type == \"date\":
-            value = certificate_data['issue_date'].strftime(\"%d/%m/%Y\")
-        elif field_type == \"unique_code\":
+        elif field_type == "date":
+            value = certificate_data['issue_date'].strftime("%d/%m/%Y")
+        elif field_type == "unique_code":
             value = certificate_data['unique_code']
-        elif field_type == \"qr_code\":
+        elif field_type == "qr_code":
             # Decode and paste QR code
             qr_img_data = base64.b64decode(qr_data.split(',')[1])
             qr_img = Image.open(BytesIO(qr_img_data))
@@ -330,7 +330,7 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
             draw.text((x, y), value, font=font, fill=color)
     
     # Save certificate
-    cert_filename = f\"{certificate_data['id']}.png\"
+    cert_filename = f"{certificate_data['id']}.png"
     cert_path = CERTIFICATES_DIR / cert_filename
     template_img.save(cert_path, 'PNG')
     
