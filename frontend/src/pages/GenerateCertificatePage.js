@@ -361,7 +361,7 @@ export const GenerateCertificatePage = () => {
                   )}
                 </div>
                 <p className="text-sm text-slate-400 mt-2">
-                  El archivo debe contener columnas: participant_name, document_id, certifier_name, representative_name, representative_name_2 (opcional)
+                  El archivo debe contener columnas: participant_name, document_id, certifier_name, representative_name, representative_name_2 (opcional), representative_name_3 (opcional)
                 </p>
               </div>
 
