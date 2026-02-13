@@ -14,6 +14,9 @@ from PIL import Image, ImageDraw
 from io import BytesIO
 import base64
 import openpyxl
+from reportlab.lib.pagesizes import landscape
+from reportlab.pdfgen import canvas as pdf_canvas
+from reportlab.lib.utils import ImageReader
 
 from models import (
     User, UserCreate, UserLogin, UserResponse, TokenResponse,
