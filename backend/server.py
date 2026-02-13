@@ -278,7 +278,24 @@ async def get_template_image(template_id: str, database: AsyncIOMotorDatabase = 
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="Template file not found")
     
-    return FileResponse(file_path)
+    # Determine media type
+    file_extension = file_path.split('.')[-1].lower()
+    media_type_map = {
+        'png': 'image/png',
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'pdf': 'application/pdf'
+    }
+    media_type = media_type_map.get(file_extension, 'application/octet-stream')
+    
+    return FileResponse(
+        file_path,
+        media_type=media_type,
+        headers={
+            "Cache-Control": "public, max-age=3600",
+            "Access-Control-Allow-Origin": "*"
+        }
+    )
 
 # ==================== CERTIFICATE GENERATION ====================
 
