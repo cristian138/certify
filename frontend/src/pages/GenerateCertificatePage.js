@@ -24,6 +24,7 @@ export const GenerateCertificatePage = () => {
     certifier_name: '',
     representative_name: '',
     representative_name_2: '',
+    representative_name_3: '',
     event_name: '',
     course_name: '',
   });
