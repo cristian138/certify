@@ -93,9 +93,13 @@ export const certificateService = {
     return response.data;
   },
 
-  createBatch: async (templateId, eventName, courseName, file) => {
+  createBatch: async (templateId, certifierName, representativeName, representativeName2, representativeName3, eventName, courseName, file) => {
     const formData = new FormData();
     formData.append('template_id', templateId);
+    if (certifierName) formData.append('certifier_name', certifierName);
+    if (representativeName) formData.append('representative_name', representativeName);
+    if (representativeName2) formData.append('representative_name_2', representativeName2);
+    if (representativeName3) formData.append('representative_name_3', representativeName3);
     if (eventName) formData.append('event_name', eventName);
     if (courseName) formData.append('course_name', courseName);
     formData.append('file', file);
