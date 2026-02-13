@@ -515,7 +515,7 @@ async def download_certificate(
     return FileResponse(
         cert['pdf_url'],
         media_type='image/png',
-        filename=f\"certificate_{cert['unique_code']}.png\"
+        filename=f"certificate_{cert['unique_code']}.png"
     )
 
 # ==================== PUBLIC VERIFICATION ====================
