@@ -4,10 +4,14 @@ from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import os
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, List
 import base64
+from pathlib import Path
 
-# Font mapping - map frontend font names to system fonts
+# Get the backend directory path
+BACKEND_DIR = Path(__file__).parent
+
+# Font mapping - map frontend font names to system fonts or local fonts
 FONT_MAP = {
     'Arial': '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
     'Helvetica': '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
@@ -21,10 +25,11 @@ FONT_MAP = {
     'Comic Sans MS': '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
     'Trebuchet MS': '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
     'Impact': '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
-    'Dancing Script': '/usr/share/fonts/truetype/cursive/DancingScript.ttf',
-    'Great Vibes': '/usr/share/fonts/truetype/cursive/GreatVibes.ttf',
-    'Parisienne': '/usr/share/fonts/truetype/cursive/Parisienne.ttf',
-    'Allura': '/usr/share/fonts/truetype/cursive/Allura.ttf',
+    # Cursive fonts - local
+    'Dancing Script': str(BACKEND_DIR / 'fonts' / 'DancingScript.ttf'),
+    'Great Vibes': str(BACKEND_DIR / 'fonts' / 'GreatVibes.ttf'),
+    'Parisienne': str(BACKEND_DIR / 'fonts' / 'Parisienne.ttf'),
+    'Allura': str(BACKEND_DIR / 'fonts' / 'Allura.ttf'),
 }
 
 def generate_certificate_hash(data: Dict[str, Any]) -> str:
