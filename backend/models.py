@@ -123,6 +123,7 @@ class CertificateResponse(BaseModel):
     certifier_name: str
     representative_name: str
     representative_name_2: Optional[str]
+    representative_name_3: Optional[str]
     issue_date: datetime
     event_name: Optional[str]
     course_name: Optional[str]
