@@ -120,7 +120,19 @@ export const GenerateCertificatePage = () => {
       toast.success(`${certificates.length} certificados generados exitosamente`);
       navigate('/certificates');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Error al generar certificados');
+      console.error('Batch error:', error);
+      let errorMsg = 'Error al generar certificados';
+      if (error.response?.data?.detail) {
+        const detail = error.response.data.detail;
+        if (typeof detail === 'string') {
+          errorMsg = detail;
+        } else if (Array.isArray(detail)) {
+          errorMsg = detail.map(e => e.msg || e.message || JSON.stringify(e)).join(', ');
+        } else if (typeof detail === 'object') {
+          errorMsg = detail.msg || detail.message || JSON.stringify(detail);
+        }
+      }
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
