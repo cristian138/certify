@@ -8,7 +8,7 @@ from io import BytesIO
 from PIL import Image
 
 class CertifyProAPITester:
-    def __init__(self, base_url="https://certgen-8.preview.emergentagent.com"):
+    def __init__(self, base_url="https://digital-certs-3.preview.emergentagent.com"):
         self.base_url = base_url
         self.token = None
         self.user_data = None
