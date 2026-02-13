@@ -21,6 +21,10 @@ FONT_MAP = {
     'Comic Sans MS': '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
     'Trebuchet MS': '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
     'Impact': '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+    'Dancing Script': '/usr/share/fonts/truetype/cursive/DancingScript.ttf',
+    'Great Vibes': '/usr/share/fonts/truetype/cursive/GreatVibes.ttf',
+    'Parisienne': '/usr/share/fonts/truetype/cursive/Parisienne.ttf',
+    'Allura': '/usr/share/fonts/truetype/cursive/Allura.ttf',
 }
 
 def generate_certificate_hash(data: Dict[str, Any]) -> str:
