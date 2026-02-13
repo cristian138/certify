@@ -87,3 +87,49 @@ def hex_to_rgb(hex_color: str) -> tuple:
     """Convert hex color to RGB tuple"""
     hex_color = hex_color.lstrip('#')
     return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+
+def create_pdf_from_images(image_paths: List[str], output_path: str) -> str:
+    """Create a single PDF from multiple PNG images"""
+    from reportlab.lib.pagesizes import letter, landscape
+    from reportlab.pdfgen import canvas as pdf_canvas
+    from reportlab.lib.utils import ImageReader
+    
+    # Use landscape letter size
+    page_width, page_height = landscape(letter)
+    
+    c = pdf_canvas.Canvas(output_path, pagesize=landscape(letter))
+    
+    for i, image_path in enumerate(image_paths):
+        if not os.path.exists(image_path):
+            continue
+            
+        # Open image to get dimensions
+        img = Image.open(image_path)
+        img_width, img_height = img.size
+        
+        # Calculate scaling to fit the page with margins
+        margin = 20
+        available_width = page_width - 2 * margin
+        available_height = page_height - 2 * margin
+        
+        # Calculate scale to fit
+        scale_x = available_width / img_width
+        scale_y = available_height / img_height
+        scale = min(scale_x, scale_y)
+        
+        # Calculate centered position
+        new_width = img_width * scale
+        new_height = img_height * scale
+        x = (page_width - new_width) / 2
+        y = (page_height - new_height) / 2
+        
+        # Draw the image
+        c.drawImage(image_path, x, y, width=new_width, height=new_height)
+        
+        # Add new page for next image (except for last one)
+        if i < len(image_paths) - 1:
+            c.showPage()
+    
+    c.save()
+    return output_path
