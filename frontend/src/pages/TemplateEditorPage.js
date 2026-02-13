@@ -15,6 +15,7 @@ const fieldTypes = [
   { value: 'certifier_name', label: 'Nombre Certificador', icon: Type },
   { value: 'representative_name', label: 'Representante 1', icon: Type },
   { value: 'representative_name_2', label: 'Representante 2', icon: Type },
+  { value: 'representative_name_3', label: 'Representante 3', icon: Type },
   { value: 'date', label: 'Fecha', icon: Calendar },
   { value: 'unique_code', label: 'Código Único', icon: Hash },
   { value: 'qr_code', label: 'Código QR', icon: QrCode },
