@@ -435,13 +435,19 @@ async def create_certificate(
 
 @api_router.post("/certificates/batch", response_model=List[CertificateResponse])
 async def create_certificates_batch(
-    batch_data: CertificateBatchCreate,
+    template_id: str = Form(...),
+    certifier_name: Optional[str] = Form(None),
+    representative_name: Optional[str] = Form(None),
+    representative_name_2: Optional[str] = Form(None),
+    representative_name_3: Optional[str] = Form(None),
+    event_name: Optional[str] = Form(None),
+    course_name: Optional[str] = Form(None),
     file: UploadFile = File(...),
     current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     # Get template
-    template = await database.templates.find_one({"id": batch_data.template_id}, {"_id": 0})
+    template = await database.templates.find_one({"id": template_id}, {"_id": 0})
     if not template:
         raise HTTPException(status_code=404, detail="Template not found")
     
@@ -461,21 +467,21 @@ async def create_certificates_batch(
                 continue
             
             # Use Excel value if present, otherwise use form value
-            certifier = str(row[2]) if len(row) > 2 and row[2] else batch_data.certifier_name
-            rep1 = str(row[3]) if len(row) > 3 and row[3] else batch_data.representative_name
-            rep2 = str(row[4]) if len(row) > 4 and row[4] else batch_data.representative_name_2
-            rep3 = str(row[5]) if len(row) > 5 and row[5] else batch_data.representative_name_3
+            certifier = str(row[2]) if len(row) > 2 and row[2] else certifier_name
+            rep1 = str(row[3]) if len(row) > 3 and row[3] else representative_name
+            rep2 = str(row[4]) if len(row) > 4 and row[4] else representative_name_2
+            rep3 = str(row[5]) if len(row) > 5 and row[5] else representative_name_3
             
             certificate = Certificate(
-                template_id=batch_data.template_id,
+                template_id=template_id,
                 participant_name=str(row[0]),
                 document_id=str(row[1]),
                 certifier_name=certifier or "",
                 representative_name=rep1 or "",
                 representative_name_2=rep2 if rep2 else None,
                 representative_name_3=rep3 if rep3 else None,
-                event_name=batch_data.event_name,
-                course_name=batch_data.course_name,
+                event_name=event_name,
+                course_name=course_name,
                 created_by=current_user.id
             )
             
@@ -505,7 +511,7 @@ async def create_certificates_batch(
             user_id=current_user.id,
             action="batch_create",
             resource_type="certificate",
-            resource_id=batch_data.template_id,
+            resource_id=template_id,
             details={"count": len(certificates)}
         )
         await database.audit_logs.insert_one({**audit.model_dump(), 'timestamp': audit.timestamp.isoformat()})
