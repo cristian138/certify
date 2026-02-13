@@ -560,6 +560,50 @@ async def download_certificate(
         filename=f"certificate_{cert['unique_code']}.png"
     )
 
+@api_router.post("/certificates/batch-pdf")
+async def download_batch_as_pdf(
+    certificate_ids: List[str],
+    current_user: UserResponse = Depends(get_current_user),
+    database: AsyncIOMotorDatabase = Depends(get_db)
+):
+    """Download multiple certificates as a single PDF"""
+    if not certificate_ids:
+        raise HTTPException(status_code=400, detail="No certificate IDs provided")
+    
+    # Get all certificates
+    certificates = await database.certificates.find(
+        {"id": {"$in": certificate_ids}},
+        {"_id": 0}
+    ).to_list(len(certificate_ids))
+    
+    if not certificates:
+        raise HTTPException(status_code=404, detail="No certificates found")
+    
+    # Collect image paths
+    image_paths = []
+    for cert in certificates:
+        if cert.get('pdf_url') and os.path.exists(cert['pdf_url']):
+            image_paths.append(cert['pdf_url'])
+    
+    if not image_paths:
+        raise HTTPException(status_code=404, detail="No certificate files found")
+    
+    # Generate PDF
+    batch_id = str(uuid.uuid4())[:8]
+    pdf_path = CERTIFICATES_DIR / f"batch_{batch_id}.pdf"
+    
+    try:
+        create_pdf_from_images(image_paths, str(pdf_path))
+        
+        return FileResponse(
+            str(pdf_path),
+            media_type='application/pdf',
+            filename=f"certificados_lote_{batch_id}.pdf"
+        )
+    except Exception as e:
+        logger.error(f"Error creating batch PDF: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating PDF: {str(e)}")
+
 # ==================== PUBLIC VERIFICATION ====================
 
 @api_router.get("/verify/{unique_code}", response_model=CertificateResponse)
