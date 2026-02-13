@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { certificateService } from '../services/api';
-import { Award, Plus, Download, ExternalLink } from 'lucide-react';
+import { Award, Plus, Download, ExternalLink, FileDown, CheckSquare, Square } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -11,6 +11,8 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const CertificatesPage = () => {
   const [certificates, setCertificates] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCerts, setSelectedCerts] = useState([]);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   useEffect(() => {
     loadCertificates();
@@ -54,6 +56,51 @@ export const CertificatesPage = () => {
     } catch (error) {
       console.error('Download error:', error);
       toast.error('Error al descargar certificado');
+    }
+  };
+
+  const toggleSelectCert = (certId) => {
+    setSelectedCerts(prev => 
+      prev.includes(certId) 
+        ? prev.filter(id => id !== certId)
+        : [...prev, certId]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedCerts.length === certificates.length) {
+      setSelectedCerts([]);
+    } else {
+      setSelectedCerts(certificates.map(c => c.id));
+    }
+  };
+
+  const handleDownloadBatchPdf = async () => {
+    if (selectedCerts.length === 0) {
+      toast.error('Selecciona al menos un certificado');
+      return;
+    }
+
+    setDownloadingPdf(true);
+    try {
+      const blob = await certificateService.downloadBatchPdf(selectedCerts);
+      
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `certificados_lote_${Date.now()}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast.success(`${selectedCerts.length} certificados descargados como PDF`);
+      setSelectedCerts([]);
+    } catch (error) {
+      console.error('Batch PDF download error:', error);
+      toast.error('Error al descargar certificados como PDF');
+    } finally {
+      setDownloadingPdf(false);
     }
   };
 
