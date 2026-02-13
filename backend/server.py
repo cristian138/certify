@@ -131,7 +131,7 @@ async def create_template(
     width: float = 1000,
     height: float = 707,
     file: UploadFile = File(...),
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     # Save uploaded file
@@ -173,7 +173,7 @@ async def create_template(
 
 @api_router.get("/templates", response_model=List[Template])
 async def get_templates(
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     templates = await database.templates.find({}, {"_id": 0}).to_list(1000)
@@ -189,7 +189,7 @@ async def get_templates(
 @api_router.get("/templates/{template_id}", response_model=Template)
 async def get_template(
     template_id: str,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     template = await database.templates.find_one({"id": template_id}, {"_id": 0})
@@ -207,7 +207,7 @@ async def get_template(
 async def update_template(
     template_id: str,
     update_data: TemplateUpdate,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     template = await database.templates.find_one({"id": template_id}, {"_id": 0})
@@ -244,7 +244,7 @@ async def update_template(
 @api_router.delete("/templates/{template_id}")
 async def delete_template(
     template_id: str,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     template = await database.templates.find_one({"id": template_id}, {"_id": 0})
@@ -339,7 +339,7 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
 @api_router.post("/certificates", response_model=CertificateResponse)
 async def create_certificate(
     cert_data: CertificateCreate,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     # Get template
@@ -395,7 +395,7 @@ async def create_certificate(
 async def create_certificates_batch(
     batch_data: CertificateBatchCreate,
     file: UploadFile = File(...),
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     # Get template
@@ -469,7 +469,7 @@ async def create_certificates_batch(
 async def get_certificates(
     skip: int = 0,
     limit: int = 100,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     certificates = await database.certificates.find({}, {"_id": 0}).skip(skip).limit(limit).to_list(limit)
@@ -485,7 +485,7 @@ async def get_certificates(
 @api_router.get("/certificates/{certificate_id}", response_model=CertificateResponse)
 async def get_certificate(
     certificate_id: str,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     cert = await database.certificates.find_one({"id": certificate_id}, {"_id": 0})
@@ -502,7 +502,7 @@ async def get_certificate(
 @api_router.get("/certificates/{certificate_id}/download")
 async def download_certificate(
     certificate_id: str,
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     cert = await database.certificates.find_one({"id": certificate_id}, {"_id": 0})
@@ -557,7 +557,7 @@ async def verify_certificate(
 
 @api_router.get("/stats", response_model=StatsResponse)
 async def get_stats(
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     total_templates = await database.templates.count_documents({})
@@ -593,7 +593,7 @@ async def get_stats(
 
 @api_router.get("/users", response_model=List[UserResponse])
 async def get_users(
-    current_user: UserResponse = Depends(lambda creds, db=Depends(get_db): get_current_user(creds, db)),
+    current_user: UserResponse = Depends(get_current_user),
     database: AsyncIOMotorDatabase = Depends(get_db)
 ):
     if current_user.role != "admin":
