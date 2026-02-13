@@ -333,6 +333,8 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
             value = certificate_data['representative_name']
         elif field_type == "representative_name_2" and certificate_data.get('representative_name_2'):
             value = certificate_data['representative_name_2']
+        elif field_type == "representative_name_3" and certificate_data.get('representative_name_3'):
+            value = certificate_data['representative_name_3']
         elif field_type == "date":
             value = certificate_data['issue_date'].strftime("%d/%m/%Y")
         elif field_type == "unique_code":
