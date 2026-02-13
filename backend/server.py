@@ -312,9 +312,14 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
     # Draw fields
     for field in template.get('fields', []):
         field_type = field['field_type']
-        x, y = int(field['x']), int(field['y'])
-        font_size = field.get('font_size', 14)
+        x = int(float(field.get('x', 0)))
+        y = int(float(field.get('y', 0)))
+        width = int(float(field.get('width', 300)))
+        height = int(float(field.get('height', 40)))
+        font_size = int(field.get('font_size', 16))
+        font_family = field.get('font_family', 'Arial')
         font_color = field.get('font_color', '#000000')
+        text_align = field.get('text_align', 'left')
         
         # Get field value
         value = ""
@@ -336,20 +341,34 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
             # Decode and paste QR code
             qr_img_data = base64.b64decode(qr_data.split(',')[1])
             qr_img = Image.open(BytesIO(qr_img_data))
-            qr_size = int(field['width'])
-            qr_img = qr_img.resize((qr_size, qr_size), Image.Resampling.LANCZOS)
+            qr_img = qr_img.resize((width, height), Image.Resampling.LANCZOS)
             template_img.paste(qr_img, (x, y))
             continue
         
         if value:
-            font = get_font(field.get('font_family', 'Arial'), font_size)
+            # Load font with proper size
+            font = get_font(font_family, font_size)
             color = hex_to_rgb(font_color)
-            draw.text((x, y), value, font=font, fill=color)
+            
+            # Handle text alignment
+            if text_align == 'center':
+                # Get text bbox for centering
+                bbox = draw.textbbox((0, 0), value, font=font)
+                text_width = bbox[2] - bbox[0]
+                x_adjusted = x + (width - text_width) // 2
+                draw.text((x_adjusted, y), value, font=font, fill=color)
+            elif text_align == 'right':
+                bbox = draw.textbbox((0, 0), value, font=font)
+                text_width = bbox[2] - bbox[0]
+                x_adjusted = x + width - text_width
+                draw.text((x_adjusted, y), value, font=font, fill=color)
+            else:  # left
+                draw.text((x, y), value, font=font, fill=color)
     
     # Save certificate
     cert_filename = f"{certificate_data['id']}.png"
     cert_path = CERTIFICATES_DIR / cert_filename
-    template_img.save(cert_path, 'PNG')
+    template_img.save(cert_path, 'PNG', quality=95)
     
     return str(cert_path)
 
