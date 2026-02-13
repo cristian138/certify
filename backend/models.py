@@ -122,12 +122,12 @@ class CertificateResponse(BaseModel):
     document_id: str
     certifier_name: str
     representative_name: str
-    representative_name_2: Optional[str]
-    representative_name_3: Optional[str]
+    representative_name_2: Optional[str] = None
+    representative_name_3: Optional[str] = None
     issue_date: datetime
-    event_name: Optional[str]
-    course_name: Optional[str]
-    pdf_url: Optional[str]
+    event_name: Optional[str] = None
+    course_name: Optional[str] = None
+    pdf_url: Optional[str] = None
     is_valid: bool
     created_at: datetime
     validation_count: int
