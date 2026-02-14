@@ -233,6 +233,7 @@ sudo supervisorctl start certifypro-backend
 ```bash
 sudo ufw allow 'Nginx Full'
 sudo ufw allow OpenSSH
+# NO necesitas abrir el puerto 8010 externamente - Nginx hace proxy
 sudo ufw enable
 sudo ufw status
 ```
