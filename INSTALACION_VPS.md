@@ -84,8 +84,10 @@ source venv/bin/activate
 ### Instalar dependencias
 ```bash
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-vps.txt
 ```
+
+> **NOTA**: Usa `requirements-vps.txt` en lugar de `requirements.txt`. El archivo original tiene versiones específicas para Python 3.11+ que pueden no ser compatibles con tu sistema.
 
 ### Configurar variables de entorno
 ```bash
