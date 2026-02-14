@@ -103,7 +103,7 @@ CORS_ORIGINS=https://tudominio.com,http://localhost:3000
 
 ### Probar el backend
 ```bash
-uvicorn server:app --host 0.0.0.0 --port 8001
+uvicorn server:app --host 0.0.0.0 --port 8010
 ```
 
 ## 7. Configurar el Frontend
@@ -151,9 +151,9 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    # API - Proxy al backend
+    # API - Proxy al backend (puerto 8010)
     location /api {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8010;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
