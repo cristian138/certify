@@ -312,7 +312,7 @@ async def generate_certificate_image(template: dict, certificate_data: dict, dat
     draw = ImageDraw.Draw(template_img)
     
     # Generate QR code
-    verification_url = f"https://digital-certs-3.preview.emergentagent.com/verify/{certificate_data['unique_code']}"
+    verification_url = f"{FRONTEND_URL}/verify/{certificate_data['unique_code']}"
     qr_data = generate_qr_code(verification_url, size=200)
     
     # Draw fields
