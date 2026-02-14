@@ -327,3 +327,16 @@ sudo certbot renew --dry-run
 Para soporte técnico o preguntas, contactar a:
 - Email: soporte@tudominio.com
 - Documentación: /app/memory/PRD.md
+
+---
+
+## Resumen de Puertos
+
+| Servicio | Puerto | Notas |
+|----------|--------|-------|
+| Nginx (HTTP) | 80 | Público |
+| Nginx (HTTPS) | 443 | Público |
+| Backend API | 8010 | Solo interno (proxy Nginx) |
+| MongoDB | 27017 | Solo localhost |
+
+> **Tus otros sistemas**: 8001, 8002, 8003, 8004, 3000 quedan libres.
