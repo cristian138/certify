@@ -6,7 +6,9 @@
 - **RAM**: Mínimo 2GB (recomendado 4GB)
 - **CPU**: 2 cores mínimo
 - **Almacenamiento**: 20GB mínimo
-- **Puertos**: 80, 443, 8001, 3000
+- **Puertos**: 80, 443, 8010 (backend API)
+
+> **NOTA**: Esta guía usa el puerto **8010** para el backend para evitar conflictos con otros servicios (8001-8004, 3000). Puedes cambiarlo según tu configuración.
 
 ## 1. Preparación del Servidor
 
