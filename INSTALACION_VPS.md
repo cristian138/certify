@@ -67,7 +67,7 @@ sudo systemctl status mongod
 
 ```bash
 cd /var/www
-sudo git clone <URL_DE_TU_REPOSITORIO> certifypro
+sudo git clone https://github.com/cristian138/certify.git certifypro
 sudo chown -R $USER:$USER certifypro
 cd certifypro
 ```
