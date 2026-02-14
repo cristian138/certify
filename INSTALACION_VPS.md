@@ -203,7 +203,7 @@ sudo nano /etc/supervisor/conf.d/certifypro-backend.conf
 Contenido:
 ```ini
 [program:certifypro-backend]
-command=/var/www/certifypro/backend/venv/bin/uvicorn server:app --host 0.0.0.0 --port 8001
+command=/var/www/certifypro/backend/venv/bin/uvicorn server:app --host 0.0.0.0 --port 8010
 directory=/var/www/certifypro/backend
 user=www-data
 autostart=true
@@ -212,6 +212,8 @@ stderr_logfile=/var/log/certifypro/backend.err.log
 stdout_logfile=/var/log/certifypro/backend.out.log
 environment=PATH="/var/www/certifypro/backend/venv/bin"
 ```
+
+> **NOTA**: Si el puerto 8010 está ocupado, cámbialo a otro disponible (ej: 8011, 8012) y actualiza también la configuración de Nginx.
 
 ### Crear directorio de logs
 ```bash
