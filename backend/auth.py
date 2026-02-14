@@ -1,10 +1,8 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 import os
-import hashlib
-import base64
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from motor.motor_asyncio import AsyncIOMotorDatabase, AsyncIOMotorClient
@@ -29,21 +27,20 @@ SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "your-secret-key-change-in-product
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
-def _prepare_password(password: str) -> str:
-    """Pre-hash password with SHA256 to handle bcrypt's 72 byte limit"""
-    # SHA256 hash produces 64 chars which is under bcrypt's 72 byte limit
-    return base64.b64encode(hashlib.sha256(password.encode()).digest()).decode('ascii')
-
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    prepared = _prepare_password(plain_password)
-    return pwd_context.verify(prepared, hashed_password)
+    """Verify password using bcrypt directly"""
+    password_bytes = plain_password.encode('utf-8')
+    hashed_bytes = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(password_bytes, hashed_bytes)
 
 def get_password_hash(password: str) -> str:
-    prepared = _prepare_password(password)
-    return pwd_context.hash(prepared)
+    """Hash password using bcrypt directly"""
+    password_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    return hashed.decode('utf-8')
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
