@@ -1,0 +1,35 @@
+# CertifyPro - Backend Dependencies
+# Compatible con Python 3.9+
+
+# Framework
+fastapi>=0.100.0
+uvicorn>=0.23.0
+python-multipart>=0.0.6
+
+# Base de datos
+motor>=3.3.0
+pymongo>=4.5.0
+
+# Autenticación
+passlib>=1.7.4
+bcrypt>=4.0.0
+python-jose>=3.3.0
+PyJWT>=2.8.0
+
+# Validación
+pydantic>=2.0.0
+email-validator>=2.0.0
+
+# Procesamiento de archivos
+pillow>=10.0.0
+openpyxl>=3.1.0
+reportlab>=4.0.0
+qrcode>=7.4.0
+
+# Utilidades
+python-dotenv>=1.0.0
+cryptography>=41.0.0
+
+# HTTP
+httpx>=0.24.0
+requests>=2.31.0
