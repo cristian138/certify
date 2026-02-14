@@ -38,6 +38,9 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# Frontend URL for QR verification (configurable)
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://digital-certs-3.preview.emergentagent.com')
+
 # Create directories for uploads
 UPLOAD_DIR = ROOT_DIR / "uploads"
 TEMPLATES_DIR = UPLOAD_DIR / "templates"
