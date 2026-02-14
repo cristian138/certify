@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 import os
+import hashlib
+import base64
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
@@ -30,11 +32,18 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
+def _prepare_password(password: str) -> str:
+    """Pre-hash password with SHA256 to handle bcrypt's 72 byte limit"""
+    # SHA256 hash produces 64 chars which is under bcrypt's 72 byte limit
+    return base64.b64encode(hashlib.sha256(password.encode()).digest()).decode('ascii')
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    prepared = _prepare_password(plain_password)
+    return pwd_context.verify(prepared, hashed_password)
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    prepared = _prepare_password(password)
+    return pwd_context.hash(prepared)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
